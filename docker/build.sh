@@ -7,7 +7,8 @@ build() {
 }
 
 run() {
-    docker run -p 3000:3000 -v apifox-data:/app/data apifox-local
+    PORT=${2:-3000}
+    docker run -p ${PORT}:3000 -v apifox-data:/app/data apifox-local
 }
 
 export_image() {
@@ -32,11 +33,11 @@ case "$1" in
         import_image
         ;;
     *)
-        echo "Usage: $0 {build|start|export|import}"
+        echo "Usage: $0 {build|start|export|import} [port]"
         echo ""
-        echo "  build   - Build Docker image"
-        echo "  start   - Run container with persistent data"
-        echo "  export  - Export image to apifox-local.tar"
-        echo "  import  - Import image from apifox-local.tar"
+        echo "  build       - Build Docker image"
+        echo "  start [port]- Run container (default port: 3000)"
+        echo "  export      - Export image to apifox-local.tar"
+        echo "  import      - Import image from apifox-local.tar"
         ;;
 esac
