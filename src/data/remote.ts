@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid'
 
 import type { ApiMenuData } from '@/components/ApiMenu'
 import type { ApiTabItem } from '@/components/ApiTab'
-import { SchemaType } from '@/components/JsonSchema'
+import { SchemaType } from '@/components/JsonSchema/constants'
 import { SERVER_INHERIT } from '@/configs/static'
 import { PROJECT_ABOUT_DOC_TITLE, PROJECT_ABOUT_MARKDOWN } from '@/content/project-about'
 import {

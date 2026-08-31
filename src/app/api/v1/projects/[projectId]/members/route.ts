@@ -6,7 +6,7 @@ import { getSessionUserFromRequest } from '@/server/auth'
 import { getProjectMembers } from '@/server/db/project-repo'
 import { ensureProjectCreator, ensureProjectPermission } from '@/server/project-access'
 
-export async function GET(
+async function GET(
   request: Request,
   projectId: string,
 ) {

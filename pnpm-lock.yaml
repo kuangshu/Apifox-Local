@@ -50,6 +50,9 @@ importers:
       array-to-tree:
         specifier: ^3.3.2
         version: 3.3.2
+      bytemd:
+        specifier: ^1.22.0
+        version: 1.22.0
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -104,6 +107,9 @@ importers:
       xlsx:
         specifier: ^0.18.5
         version: 0.18.5
+      yaml:
+        specifier: ^2.7.1
+        version: 2.7.1
       yjs:
         specifier: ^13.6.30
         version: 13.6.30
