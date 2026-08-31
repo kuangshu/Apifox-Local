@@ -8,7 +8,7 @@ build() {
 
 run() {
     PORT=${2:-3000}
-    docker run -p ${PORT}:3000 -v apifox-data:/app/data apifox-local
+    docker run -p ${PORT}:3000 -v apifox-data:/app/runtime apifox-local
 }
 
 export_image() {
