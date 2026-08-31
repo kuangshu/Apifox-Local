@@ -102,6 +102,9 @@ cd docker
 # 运行容器
 ./build.sh start
 
+# 停止容器
+./build.sh stop
+
 # 导出镜像（可分发）
 ./build.sh export
 
