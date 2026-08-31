@@ -95,25 +95,18 @@ pnpm start
 
 ```sh
 cd docker
-./build.sh
-```
 
-这会构建镜像并启动容器，访问 `http://localhost:3000`。
+# 构建镜像
+./build.sh build
 
-**持久化数据：**
+# 运行容器
+./build.sh start
 
-```sh
-docker run -p 3000:3000 -v apifox-data:/app/data apifox-local
-```
+# 导出镜像（可分发）
+./build.sh export
 
-**导出 / 导入镜像：**
-
-```sh
-# 导出
-docker save apifox-local -o apifox-local.tar
-
-# 导入（在其他机器上）
-docker load -i apifox-local.tar
+# 导入镜像（在其他机器上）
+./build.sh import
 ```
 
 ### 代码检查
