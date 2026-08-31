@@ -91,6 +91,31 @@ pnpm build
 pnpm start
 ```
 
+### Docker 部署
+
+```sh
+cd docker
+./build.sh
+```
+
+这会构建镜像并启动容器，访问 `http://localhost:3000`。
+
+**持久化数据：**
+
+```sh
+docker run -p 3000:3000 -v apifox-data:/app/data apifox-local
+```
+
+**导出 / 导入镜像：**
+
+```sh
+# 导出
+docker save apifox-local -o apifox-local.tar
+
+# 导入（在其他机器上）
+docker load -i apifox-local.tar
+```
+
 ### 代码检查
 
 ```sh
