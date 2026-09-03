@@ -81,7 +81,7 @@ function setSessionCookie(headers: Headers, sessionId: string, expiresAt: number
     path: '/',
     httpOnly: true,
     sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
+    secure: false,
     expires: new Date(expiresAt),
   })
 }
@@ -91,7 +91,7 @@ function clearSessionCookie(headers: Headers) {
     path: '/',
     httpOnly: true,
     sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
+    secure: false,
     maxAge: 0,
   })
 }
