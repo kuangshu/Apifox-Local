@@ -3,7 +3,8 @@
 cd "$(dirname "$0")"
 
 build() {
-    docker build -t apifox-local -f Dockerfile ..
+    TIMESTAMP=$(date +%Y%m%d%H%M%S)
+    docker build -t apifox-local:latest -t apifox-local:${TIMESTAMP} -f Dockerfile ..
 }
 
 run() {
