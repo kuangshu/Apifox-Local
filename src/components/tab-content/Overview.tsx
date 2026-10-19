@@ -69,7 +69,7 @@ export function Overview() {
         </div>
       </Col>
 
-      <Col span={16}>
+      {/* <Col span={16}>
         <div
           style={{
             border: `1px solid ${token.colorBorderSecondary}`,
@@ -91,7 +91,7 @@ export function Overview() {
         >
           <Skeleton />
         </div>
-      </Col>
+      </Col> */}
     </Row>
   )
 }
