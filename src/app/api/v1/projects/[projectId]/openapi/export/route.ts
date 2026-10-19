@@ -18,7 +18,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   const access = ensureProjectPermission({
     projectId,
     userId: user.id,
-    required: 'editor',
+    required: 'viewer',
   })
 
   if ('error' in access) {
