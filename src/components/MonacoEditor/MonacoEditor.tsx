@@ -1,10 +1,47 @@
-import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
 import { Editor, type EditorProps } from '@monaco-editor/react'
 import { merge } from 'lodash-es'
 
-import { UnsafeAny } from '@/types'
+import type { UnsafeAny } from '@/types'
 import { deserialize, isPureObject, serialize } from '@/utils'
+
+let monacoEsmLoad: Promise<unknown> | undefined
+
+function loadMonacoEsm() {
+  monacoEsmLoad ??= import('./monaco-esm')
+
+  return monacoEsmLoad
+}
+
+/**
+ * 把 npm 包里的 monaco 装进 loader，并配置好语言服务的 Web Worker。
+ *
+ * 这里必须经过动态 import：`monaco-esm.ts` 顶层 import 了 `monaco-editor` 和 `?worker`，
+ * 只在客户端 chunk 里执行，避免被打进 SSR bundle。
+ *
+ * loader 要求「配置」早于「init」，而 `<Editor />` 要等自己 mount 的 effect 里才 init，
+ * 所以等这里加载完再渲染 `<Editor />` 即可保证顺序。
+ */
+function useMonacoEsm() {
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    let alive = true
+
+    void loadMonacoEsm().then(() => {
+      if (alive) {
+        setReady(true)
+      }
+    })
+
+    return () => {
+      alive = false
+    }
+  }, [])
+
+  return ready
+}
 
 type EditorMountParams = Parameters<NonNullable<EditorProps['onMount']>>
 type EditorInstance = EditorMountParams[0]
@@ -47,6 +84,7 @@ function EditorX<ValueType = unknown>(
   } = props
 
   const [editorMounted, setEditorMounted] = useState(false)
+  const monacoEsmReady = useMonacoEsm()
 
   const editorRef = useRef<EditorInstance>()
   const monacoRef = useRef<MonacoInstance>()
@@ -77,6 +115,14 @@ function EditorX<ValueType = unknown>(
   const valueObj = useDefaultValue
     ? { defaultValue: getEditorValue(value) }
     : { value: getEditorValue(value) }
+
+  if (!monacoEsmReady) {
+    return (
+      <div className={editorProps.className} style={{ padding: 12, opacity: 0.6 }}>
+        {editorProps.loading ?? '初次加载可能耗时较久，请耐心等待...'}
+      </div>
+    )
+  }
 
   return (
     <>

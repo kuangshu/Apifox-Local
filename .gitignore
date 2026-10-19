@@ -54,3 +54,6 @@ runtime/
 
 # docker images
 *.tar
+
+# LLM
+.workbuddy*
