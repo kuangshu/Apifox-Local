@@ -10,9 +10,15 @@ build() {
     docker build -t apifox-local:latest -t apifox-local:${TIMESTAMP} -f Dockerfile ..
 }
 
+# 运行参数（镜像名、端口、数据卷、重启策略）统一由仓库根的 docker-compose.yml 定义，
+# 这里只做转发，避免两处维护同一份配置
 run() {
     PORT=${2:-3000}
-    docker run -d -p ${PORT}:3000 -v apifox-data:/app/runtime --name apifox-local apifox-local
+    ( cd .. && PORT=${PORT} docker compose up -d )
+}
+
+stop() {
+    ( cd .. && docker compose down )
 }
 
 # 找出 latest 对应的 14 位时间戳 tag；若 latest 没有时间戳 tag（例如手工 tag 过），现场补一个
@@ -58,7 +64,7 @@ import_image() {
 }
 
 stop() {
-    docker stop apifox-local && docker rm apifox-local
+    ( cd .. && docker compose down )
 }
 
 clean() {
@@ -100,8 +106,8 @@ case "$1" in
         echo "Usage: $0 {build|start|stop|export|import|clean} [port|keep|file]"
         echo ""
         echo "  build         - Build Docker image (tags: latest + 时间戳)"
-        echo "  start [port]  - Run container (default port 3000)"
-        echo "  stop          - Stop and remove container"
+        echo "  start [port]  - docker compose up -d (default port 3000)"
+        echo "  stop          - docker compose down (数据卷保留)"
         echo "  export        - Export to apifox-local-<时间戳>.tar (含时间戳 tag + latest)"
         echo "  import [file] - Import from tar (默认取最新的 apifox-local*.tar)"
         echo "  clean [n]     - Remove older apifox-local images, keep newest n (default 2)"

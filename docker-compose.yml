@@ -1,0 +1,18 @@
+services:
+  apifox-local:
+    image: apifox-local:latest
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: apifox-local
+    restart: unless-stopped
+    ports:
+      # 想换端口：PORT=8080 docker compose up -d
+      - "${PORT:-3000}:3000"
+    volumes:
+      # 具名卷，显式声明 name 以复用已有的 apifox-data（否则 compose 会加项目名前缀）
+      - apifox-data:/app/runtime
+
+volumes:
+  apifox-data:
+    name: apifox-data
