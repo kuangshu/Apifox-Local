@@ -127,7 +127,14 @@ function EditorX<ValueType = unknown>(
   return (
     <>
       <Editor
-        defaultLanguage="javascript"
+        /**
+         * 注意：@monaco-editor/react 创建 model 时用的是 `defaultLanguage || language`，
+         * 即 defaultLanguage 的优先级更高；而 setModelLanguage 只在 language 变化时才触发，
+         * 首次挂载不会执行。所以这里一旦写死 defaultLanguage，外部传的 language 就永远不生效
+         * （曾导致 JSON 编辑器按 JavaScript 解析，报 "';' expected.(1005)"）。
+         * 只在调用方没指定 language 时才回退到 javascript。
+         */
+        defaultLanguage={editorProps.language ? undefined : 'javascript'}
         loading="初次加载可能耗时较久，请耐心等待..."
         {...editorProps}
         {...valueObj}
