@@ -1,0 +1,42 @@
+# ---- 依赖与构建产物 ----
+node_modules
+build
+
+# ---- 版本控制与本地数据（数据库绝不能进镜像/上下文） ----
+.git
+.gitignore
+runtime
+*.sqlite*
+
+# ---- docker 目录自身：Dockerfile 经 -f 传入、脚本在宿主机执行，不需要进上下文
+#     （里面有 2GB 的镜像 tar，不排除的话每次构建都白传一遍）
+docker
+
+# ---- 大文件：导出的镜像 tar，别再进构建上下文 ----
+*.tar
+*.tar.*
+.tmp-*
+
+# ---- IDE / 编辑器 ----
+.vscode
+.idea
+.DS_Store
+*.local
+
+# ---- 密钥与环境变量 ----
+.env
+.env.*
+!.env.example
+
+# ---- 日志 ----
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---- 其他 ----
+tsconfig.tsbuildinfo
+package-lock.json
+.workbuddy-ai
+.react-router
